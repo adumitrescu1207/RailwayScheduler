@@ -1,7 +1,5 @@
 ﻿using RailwayScheduler.Models;
 using RailwayScheduler.Database;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
 
 namespace RailwayScheduler.Services
 {
@@ -17,17 +15,18 @@ namespace RailwayScheduler.Services
             return _trainContext.Set<Train>().ToList();
         }
 
-        public Train? GetById(int id) 
+        public Train GetById(int id) 
         {
             return _trainContext.Set<Train>().FirstOrDefault(train => train.Id == id);
         }
-        public Train? GetBySource(string source)
+        public List<Train> GetBySource(string source)
         {
-            return _trainContext.Set<Train>().FirstOrDefault(train => train.Source == source);
+            return _trainContext.Trains.Where(train => train.Source == source).ToList();
         }
-        public Train? GetByDestination(string destination)
+
+        public List<Train> GetByDestination(string destination)
         {
-            return _trainContext.Set<Train>().FirstOrDefault(train => train.Destination == destination);
+            return _trainContext.Trains.Where(train => train.Destination == destination).ToList();
         }
 
         public void Add(Train train)

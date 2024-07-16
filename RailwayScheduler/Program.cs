@@ -28,7 +28,7 @@ namespace RailwayScheduler
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                dbContext.Database.Migrate(); // This will apply any pending migrations
+                dbContext.Database.Migrate();
             }
 
             // Configure the HTTP request pipeline.
