@@ -19,22 +19,34 @@ namespace RailwayScheduler.Controllers
             return Ok(_trainService.GetAll());
         }
         
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id) {
-            return Ok(_trainService.GetById(id));
-        }
-        
-        [HttpGet("GetBySource")]
-        public IActionResult GetBySource(string source)
+        [HttpGet("GetById/{id}")]
+        public IActionResult GetById(int id)
         {
-            return Ok(_trainService.GetBySource(source));
+            var train = _trainService.GetById(id);
+            if (train == null)
+                return BadRequest("Train with this ID not found.");
+            return Ok(train);
         }
 
-        [HttpGet("GetByDestination")]
-        public IActionResult GetByDestination(string destination) {
-            return Ok(_trainService.GetByDestination(destination));
+
+        [HttpGet("GetBySource/{source}")]
+        public IActionResult GetBySource(string source)
+        {
+            var trains = _trainService.GetBySource(source);
+            if (trains == null || !trains.Any())
+                return BadRequest("Train from this source not found.");
+            return Ok(trains);
         }
-        
+
+        [HttpGet("GetByDestination/{destination}")]
+        public IActionResult GetByDestination(string destination)
+        {
+            var trains = _trainService.GetByDestination(destination);
+            if (trains == null || !trains.Any())
+                return BadRequest("Train to this destionation not found.");
+            return Ok(trains);
+        }
+
         [HttpPost("AddTrain")]
         public IActionResult Post(Train train)
         {
@@ -54,8 +66,9 @@ namespace RailwayScheduler.Controllers
         [HttpDelete("RemoveTrain")]
         public IActionResult Delete(int id)
         {
-            if (_trainService.GetById(id) is not null)
-                _trainService.Remove(id);
+            if (_trainService.GetById(id) is null)
+                return BadRequest("Train doesn't exist");
+            _trainService.Remove(id);
             return Ok();
         }
 

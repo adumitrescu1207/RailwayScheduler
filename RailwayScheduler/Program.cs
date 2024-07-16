@@ -2,6 +2,7 @@ using RailwayScheduler.Database;
 using RailwayScheduler.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
 
 namespace RailwayScheduler
 {
@@ -21,6 +22,14 @@ namespace RailwayScheduler
             builder.Services.AddScoped<TrainService>();
             builder.Services.AddDbContext<DatabaseContext>(o =>
                 o.UseSqlite("Data Source=TrainDatabase.db"));
+            //Add CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    builder => builder.WithOrigins("http://localhost:5173")
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod());
+            });
 
             var app = builder.Build();
 
@@ -47,7 +56,7 @@ namespace RailwayScheduler
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "RailwayScheduler API V1");
-                c.RoutePrefix = string.Empty; // Set Swagger UI at the root of the application
+                c.RoutePrefix = string.Empty; 
             });
 
             app.Run();

@@ -14,17 +14,16 @@ namespace RailwayScheduler.Services
         {
             return _trainContext.Set<Train>().ToList();
         }
-
-        public Train GetById(int id) 
+        public Train? GetById(int id) 
         {
             return _trainContext.Set<Train>().FirstOrDefault(train => train.Id == id);
         }
-        public List<Train> GetBySource(string source)
+        public List<Train>? GetBySource(string source)
         {
             return _trainContext.Trains.Where(train => train.Source == source).ToList();
         }
 
-        public List<Train> GetByDestination(string destination)
+        public List<Train>? GetByDestination(string destination)
         {
             return _trainContext.Trains.Where(train => train.Destination == destination).ToList();
         }
