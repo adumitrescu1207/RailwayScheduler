@@ -13,6 +13,7 @@ namespace RailwayScheduler.Controllers
         {
                 _trainService = trainService;
         }
+
         [HttpGet("GetAllTrains")]
         public IActionResult Get()
         {
@@ -28,22 +29,21 @@ namespace RailwayScheduler.Controllers
             return Ok(train);
         }
 
-
-        [HttpGet("GetBySource/{source}")]
-        public IActionResult GetBySource(string source)
+        [HttpGet("GetSourceByTime/{source}")]
+        public IActionResult GetSourceAlphabetically(string source)
         {
-            var trains = _trainService.GetBySource(source);
+            var trains = _trainService.GetSourceByTime(source);
             if (trains == null || !trains.Any())
-                return BadRequest("Train from this source not found.");
+                return BadRequest("Trains from this source not found.");
             return Ok(trains);
         }
 
-        [HttpGet("GetByDestination/{destination}")]
-        public IActionResult GetByDestination(string destination)
+        [HttpGet("GetDestinationByTime/{destination}")]
+        public IActionResult GetDestinationAlphabetically(string destination)
         {
-            var trains = _trainService.GetByDestination(destination);
+            var trains = _trainService.GetDestinationByTime(destination);
             if (trains == null || !trains.Any())
-                return BadRequest("Train to this destionation not found.");
+                return BadRequest("Trains to this destination not found.");
             return Ok(trains);
         }
 
@@ -55,6 +55,7 @@ namespace RailwayScheduler.Controllers
             _trainService.Add(train);
             return Ok();
         }
+
         [HttpPut("UpdateTrain")]
         public IActionResult Put(Train train)
         {
@@ -63,6 +64,7 @@ namespace RailwayScheduler.Controllers
             _trainService.Update(train.Id, train);
             return Ok();
         }
+
         [HttpDelete("RemoveTrain")]
         public IActionResult Delete(int id)
         {

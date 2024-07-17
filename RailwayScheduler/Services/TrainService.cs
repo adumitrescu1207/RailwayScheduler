@@ -50,7 +50,14 @@ namespace RailwayScheduler.Services
                 check.TimeSource = train.TimeSource;
                 _trainContext.SaveChanges();
             }
-        
+        }
+        public List<Train> GetSourceByTime(string source)
+        {
+            return _trainContext.Trains.Where(train => train.Source == source).OrderBy(train => train.TimeSource).ToList();
+        }
+        public List<Train> GetDestinationByTime(string destination)
+        {
+            return _trainContext.Trains.Where(train => train.Destination == destination).OrderBy(train => train.TimeDestination).ToList();
         }
     }
 }
